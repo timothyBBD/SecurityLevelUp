@@ -5,7 +5,7 @@ USE simplicity_db;
 CREATE TABLE users (
 	id BINARY(16) PRIMARY KEY,
     user_name VARCHAR(50) CHARACTER SET utf8mb4 UNIQUE,
-	admin_user BOOL DEFAULT false
+	admin_user BOOL
 );
 
 CREATE TABLE emails (
@@ -17,7 +17,9 @@ CREATE TABLE emails (
 
 CREATE TABLE passwords (
 	id BINARY(16) PRIMARY KEY, 
-    password_hash BINARY(32)
+    password_hash BINARY(32), 
+    user_id BINARY(16), 
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE salts (
