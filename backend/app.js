@@ -1,27 +1,24 @@
-import mysql from 'mysql2';
+
+import { addUser, passwordDetails, userDetails } from './services/queries';
+
+
 
 
 (async function sqlTesting()
 {
-    const options = {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_DATABASE
-    };
+    const email = 'bob@temp.com',
+    isAdmin = true,
+    passwordHash = 'C34AB9019CA5A1ED9D4B3FBB689B67CE8191941AF16186D1E0E386D73ADC8741',
+    passwordSalt = 'A3EF77A29CA5A1ED9D4B3FBB689B67CE8991942AF56186D3E0E386D73F3C1242',
+    userName = 'Josh';
 
 
-    let connection = mysql.createConnection(options);
-    const username = 'Jimmy';
-    const isAdmin = false;
-
-    connection.connect();
-    connection.query('CALL add_new_user(?,?)', [ username, isAdmin ]);
-
-    connection.query('SELECT * FROM users',(error, results) => {
-        if (error) throw error;
-        console.log(results);
-    });
-
-    connection.end();
+    const { password_hash, salt_value } = await passwordDetails(userName);
+    console.log(password_hash);
+    console.log(salt_value);
 })();
+
+
+
+
+

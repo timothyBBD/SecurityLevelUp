@@ -17,6 +17,7 @@
         "camelcase": "error",
         "no-console": "error", 
         "object-curly-spacing": ["error", "always"],
-        "array-bracket-spacing": ["error", "always"]
+        "array-bracket-spacing": ["error", "always"], 
+        "no-extra-boolean-cast": "off"
     }
 }
