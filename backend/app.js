@@ -1,5 +1,6 @@
 
-import { addUser, passwordDetails, userDetails } from './services/queries';
+import { createAccessToken, validateAccessToken } from './services/authentication';
+import { addUser, passwordDetails, userDetails } from './services/db-queries';
 
 
 
@@ -13,9 +14,9 @@ import { addUser, passwordDetails, userDetails } from './services/queries';
     userName = 'Josh';
 
 
-    const { password_hash, salt_value } = await passwordDetails(userName);
-    console.log(password_hash);
-    console.log(salt_value);
+    const token = createAccessToken({ userName, email });
+    const isValid = validateAccessToken(token);
+    console.log(isValid);
 })();
 
 
