@@ -1,5 +1,7 @@
 
-import { createAccessToken, validateAccessToken } from './services/authentication';
+import { createAccessToken, encrypt, decrypt, validateAccessToken } from './services/authentication';
+import crypto  from 'crypto';
+
 import { addUser, passwordDetails, userDetails } from './services/db-queries';
 
 
@@ -14,9 +16,16 @@ import { addUser, passwordDetails, userDetails } from './services/db-queries';
     userName = 'Josh';
 
 
-    const token = createAccessToken({ userName, email });
-    const isValid = validateAccessToken(token);
-    console.log(isValid);
+    // const token = createAccessToken({ userName, email });
+    // const isValid = validateAccessToken(token);
+    // console.log(isValid);
+    const uuid = crypto.randomBytes(16);
+    const encrypted = encrypt(uuid);
+    const decrypted = decrypt(encrypted);
+    console.log(uuid.toString('hex'));
+    console.log(encrypted);
+    console.log(decrypted);
+
 })();
 
 
