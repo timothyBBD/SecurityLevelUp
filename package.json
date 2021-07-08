@@ -4,7 +4,11 @@
   "description": "The security project for the security fundamentals level up",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd frontend & npm start\" \"cd backend & node server.js\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "repository": {
     "type": "git",
@@ -18,5 +22,8 @@
   "homepage": "https://github.com/timothyBBD/SecurityLevelUp#readme",
   "devDependencies": {
     "eslint": "^7.14.0"
+  },
+  "dependencies": {
+    "concurrently": "^6.2.0"
   }
 }
