@@ -1,5 +1,5 @@
 import React from 'react';
-import './article.css';
+import './article.scss';
 
 export default function Article(params) {
     const {title, message} = params;

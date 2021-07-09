@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './aboutPreview.css';
+import './aboutPreview.scss';
 
 export default function AboutPreview() {
     return (

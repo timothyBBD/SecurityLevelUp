@@ -1,3 +1,5 @@
+@import "custom";
+
 .App {
   text-align: center;
 }
@@ -40,4 +42,8 @@
 
 .testytest {
   border: 1px solid black;
+}
+
+.pageButtonStyle {
+  padding: 8px;
 }
