@@ -38,12 +38,19 @@
     transform: rotate(360deg);
   }
 }
+.pageButtonStyle {
+  padding: 8px;
+}
+
+.brandName {
+  font-size: 3vh;
+}
+
+.mainContent {
+  margin-top: 40px;
+}
 
 
 .testytest {
   border: 1px solid black;
-}
-
-.pageButtonStyle {
-  padding: 8px;
 }

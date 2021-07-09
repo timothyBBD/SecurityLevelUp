@@ -1,9 +1,9 @@
 .login-modal{
-    position: absolute;
-    top: 0;
-    background-color: rgba(0, 0, 0, 0.17);
-    width: 100vw;
-    height: 100vh;
+    // position: absolute;
+    // top: 0;
+    // background-color: rgba(0, 0, 0, 0.17);
+    // width: 100vw;
+    // height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,21 +11,31 @@
 }
 
 .modal-content{
-    background-color: white;
-    border-radius: 87px;
-    width: 772px;
+    // background-color: white;
+    // border-radius: 87px;
+    // width: 772px;
+    // width: 772px;
+
+    border: none;
+    border-radius: 1.0rem;
 }
 
 .login-tab{
     display:  flex;
     justify-content: space-evenly;
+
+    // width: 90%;
+    padding-right: 40px;
 }
 
 .login-tab li {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 286px;
+
+    // width: 286px;
+    width: 80%;
+
     height: 68px;
     list-style: none;
     border-bottom: 2px solid #989898;
@@ -51,7 +61,10 @@
     border: none;
     border-radius: 20px;
     background-color: #E5E5E5;
-    width: 550px;
+
+    // width: 550px;
+    width: 60%;
+
     padding: 14px;
 }
 
