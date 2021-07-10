@@ -6,8 +6,6 @@
  const iv =Buffer.from(process.env.SALT_ENCRYPTION_IV, encoding);
 
 
-
-
 export const encrypt = (value) => {
   const cipher = createCipheriv(algorithm, key , iv );
 
