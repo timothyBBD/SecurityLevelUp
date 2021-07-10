@@ -1,6 +1,7 @@
 
 import * as http from "http";
 import express, { Express } from "express";
+import cors from 'cors';
 import { json, urlencoded } from "body-parser";
 import blogRouter from "./routes/blog-router";
 import userRouter from "./routes/user-router";
@@ -37,7 +38,7 @@ export class Server {
         // Required for POST requests
         this._app.use(json());
         this._app.use(urlencoded({ extended: true }));
-        this._app.use(cors())
+        this._app.use(cors)
 
         // CORS
         this.app.use(function (req, res, next) {
