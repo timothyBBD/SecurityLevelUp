@@ -1,5 +1,5 @@
 import { createAccessToken, encrypt, hashPassword } from './authentication';
-import { addUser } from './db-queries';
+import { addUser, userDetails } from './db-queries';
 import { randomBytes }  from 'crypto';
 
 
@@ -15,6 +15,11 @@ export const registerUser = async (user) => {
     delete storedUser.password;
 
     await addUser(storedUser);
+    const addedUser = await userDetails(storedUser.userName);
+    if(!addedUser)
+    {
+        throw new Error('Failed to add new user, ensure details are valid');
+    }
 
     return createAccessToken({ email: user.userName, admin: user.isAdminUser } );
 
