@@ -19,6 +19,6 @@ export const loginUser = async (user) => {
         throw new Error('Failed to login, Invalid User details provided');
     }
 
-    const accessToken = createAccessToken({ user: user.username, email: user.email, admin: user.isAdminUser } );
+    const accessToken = createAccessToken({ user: user.username, userId: dbUser.userId, email: user.email, admin: user.isAdminUser } );
     return accessToken;
 };

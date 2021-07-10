@@ -13,6 +13,6 @@ export const query = async (query, ...args) => {
     let connection = await  mysql.createConnection(options);
     const [ rows ] = await connection.execute(query, args);
     connection.end();
-    return rows[0];
+    return rows;
 };
 

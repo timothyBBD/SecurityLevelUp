@@ -22,7 +22,7 @@ export const registerUser = async (user) => {
         throw new Error('Failed to add new user, details provided are not valid');
     }
 
-    const accessToken = createAccessToken({user: user.username, email: user.email, admin: user.isAdminUser } );
+    const accessToken = createAccessToken({ user: user.username, userId: newUser.userId, email: user.email, admin: user.isAdminUser } );
 
     return { newUser, accessToken };
 };
