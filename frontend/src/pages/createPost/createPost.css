@@ -1,0 +1,49 @@
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.post-form input {
+    margin-top: 36px;
+    border: none;
+    border-radius: 20px;
+    background-color: #E5E5E5;
+    width: 550px;
+    padding: 14px;
+}
+
+.post-form input:focus{
+    outline: none;
+}
+
+.post-form textarea {
+    margin-top: 36px;
+    border: none;
+    border-radius: 20px;
+    background-color: #E5E5E5;
+    width: 550px;
+    padding: 14px;
+    resize: none;
+}
+
+.post-form textarea:focus{
+    outline: none;
+}
+
+.post-form button{
+    border: 3px solid black;
+    border-radius: 28px;
+    padding: 14px;
+    width: 164px;
+    margin-bottom: 44px;
+    background-color: transparent;
+    margin-top: 32px;
+}
