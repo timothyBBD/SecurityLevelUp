@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import './loginModal.css';
+import './loginModal.scss';
 
 function LoginForm() {
     function handleForgotPassword() {
