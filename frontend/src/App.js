@@ -39,21 +39,8 @@ function App() {
     <div className='App'>
       <Modal show={show} onHide={handleClose} size='lg' >
         <Modal.Body>
-          <LoginModal />
-          
+          <LoginModal closeModal={handleClose}/>
         </Modal.Body>
-
-
-        {/* <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant='primary' onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
-
-
       </Modal>
 
       <Router>

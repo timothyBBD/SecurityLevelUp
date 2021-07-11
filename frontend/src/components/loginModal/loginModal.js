@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 
 import './loginModal.scss';
 
+import { loginController } from '../../controllers'
+
 function LoginForm() {
     function handleForgotPassword() {
         alert('Too bad');
     }
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
         const username = event.target[0].value;
         const password = event.target[1].value;
-        alert(`${username}   ${password}`)
+        const result = await loginController.login(username, password)
     }
     return (
         <form onSubmit={handleLogin} className="login-container">
@@ -19,13 +21,15 @@ function LoginForm() {
             <input name="username" type="text" id="username" placeholder="Username" />
             <input name="password" type="password" id="password" placeholder="Password" />
             <p className="password-reset-text" onClick={handleForgotPassword}>Forgot your password</p>
+            <br/>
+            <p className='login-failed-text'>Invalid Login Details</p>
             <button type="submit">Login</button>
         </form>
     )
 }
 
 function RegisterForm() {
-    function handleRegister(event) {
+    async function handleRegister(event) {
         event.preventDefault();
         const username = event.target[0].value;
         const email = event.target[1].value
@@ -37,7 +41,7 @@ function RegisterForm() {
             return;
         }
 
-        console.log(`${username} ${email} ${password}`);
+        const result = await loginController.register(username, email, password);
     }
     return (
         <form onSubmit={handleRegister} className="login-container">
@@ -45,7 +49,8 @@ function RegisterForm() {
             <input name="email" type="text" id="email" placeholder="Email Address" />
             <input name="password" type="password" id="password" placeholder="Password" />
             <input name="confirmPassword" type="password" id="confirmPassword" placeholder="Confirm Password" />
-            <br/>
+            <br />
+            
             <button type="submit">Register</button>
         </form>
     )
@@ -54,11 +59,11 @@ function RegisterForm() {
 export default function LoginModal() {
     const [loginSelected, setLoginSelected] = useState(true)
 
-    function changeRegister(params) {
+    function changeRegister() {
         setLoginSelected(false);
     }
 
-    function changeLogin(params) {
+    function changeLogin() {
         setLoginSelected(true);
     }
 
