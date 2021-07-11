@@ -11,11 +11,11 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
-
 import Button from 'react-bootstrap/Button';
+
+import CreatePost from './pages/createPost/createPost'
 const Article = Components.Article;
 const AboutPreview = Components.AboutPreview;
-
 const LoginModal = Components.LoginModal;
 
 function App() {
@@ -67,9 +67,9 @@ function App() {
                   onClick={() => {
                     setPage(1);
                   }}
-                  to='/about'
+                  to='/AddPost'
                 >
-                  About
+                  Add
                 </Link>
 
                 <Link
@@ -110,8 +110,8 @@ function App() {
                 </Row>
               </Container>
             </Route>
-            <Route path='/about'>
-              <AboutPreview />
+            <Route path='/AddPost'>
+              <CreatePost />
             </Route>
           </Switch>
         </div>
