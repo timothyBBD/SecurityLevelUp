@@ -1,12 +1,15 @@
+import { Algorithm } from 'jsonwebtoken';
+
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
             JWT_ENCRYPTION_KEY_PATH: number | PathLike
-            JWT_ALGORITHM: Algorithms | undefined
+            JWT_ALGORITHM: Algorithm;
             SALT_ENCRYPTION_KEY: string
             SALT_ENCRYPTION_IV: string
             HASH_ALGORITHM: string
             JWT_VALIDATION_KEY_PATH: number | PathLike
+            SALT_BYTES: string
         }
     }
 }

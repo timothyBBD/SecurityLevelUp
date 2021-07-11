@@ -1,28 +1,21 @@
 import { createAccessToken, encrypt, hashPassword } from '../authentication';
 import { addUser, userDetails } from '../db-queries';
-import { randomBytes }  from 'crypto';
+import { User } from '../../models/user';
+import { UserJwt } from '../../models/user-jwt-token';
 
 
 
-export const registerUser = async (user) => {
+export const registerUser = async (user: User) => {
 
-    const storedUser = { ...user };
+    await addUser(user);
+    const dbUser = await userDetails(user.getUserName());
 
-    const salt = randomBytes(parseInt(process.env.SALT_BYTES, 10)).toString('hex');
-    storedUser.passwordHash = hashPassword(user.password, salt);
-    storedUser.encryptedSalt = encrypt(salt);
-
-    delete storedUser.password;
-
-    await addUser(storedUser);
-    const newUser = await userDetails(storedUser.userName);
-
-    if(Object.keys(newUser).length === 0 && newUser.constructor === Object)
+    if (Object.keys(dbUser).length === 0 && dbUser.constructor === Object)
     {
         throw new Error('Failed to add new user, details provided are not valid');
     }
 
-    const accessToken = createAccessToken({ user: user.username, userId: newUser.userId, email: user.email, admin: user.isAdminUser } );
+    const accessToken = createAccessToken(new UserJwt(dbUser[0].id, dbUser[0].name, dbUser[0].email, dbUser[0].admin));
 
-    return { newUser, accessToken };
+    return { dbUser, accessToken };
 };

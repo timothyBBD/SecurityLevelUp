@@ -1,4 +1,4 @@
-export * from './user-details.js';
+export * from './user-details';
 export * from './add-user';
 export * from './password-details';
 

@@ -1,5 +1,7 @@
 import * as crypto from "crypto"
-import { addUser } from "../services/queries/add-user"
+import { encrypt, hashPassword } from "../services/authentication"
+import { addUser } from "../services/db-queries"
+import { registerUser } from "../services/user-services"
 
 export class User {
     private name: string
@@ -51,7 +53,7 @@ export class User {
         return this.salt
     }
 
-     public setName(name: string) {
+    public setName(name: string) {
         this.name = name
     }
 
@@ -81,19 +83,19 @@ export class User {
 
     public insertToDb() {
         if (this.salt != "" && this.hashedPassword != "") {
-            addUser(this)
+            registerUser(this)
         }
     }
 
     private async hash(password: string): Promise<string> {
         return new Promise((resolve, reject) => {
             // generate random 16 bytes long salt
-            this.salt = crypto.randomBytes(16).toString("hex")
-
-            crypto.scrypt(password, this.salt, 64, (err: Error | null, derivedKey: Buffer) => {
-                if (err) reject(err);
-                resolve(this.salt + ":" + derivedKey.toString('hex'))
-            });
+            let numberOfBytes: string = "16"
+            if (process.env.SALT_BYTES != undefined)
+                numberOfBytes = process.env.SALT_BYTES
+            const salt = crypto.randomBytes(parseInt(numberOfBytes, 10)).toString('hex');
+            this.hashedPassword = hashPassword(password, salt);
+            this.salt = encrypt(salt);
         })
     }
 

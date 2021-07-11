@@ -1,17 +1,29 @@
- import { createCipheriv, createDecipheriv }  from 'crypto';
+import { createCipheriv, createDecipheriv } from 'crypto';
 
- const encoding = 'hex';
+
+if (process.env.SALT_ENCRYPTION_ALG == undefined) {
+  throw new Error("env is wrong")
+}
+if (process.env.SALT_ENCRYPTION_KEY == undefined) {
+  throw new Error("env is wrong")
+}
+if (process.env.SALT_ENCRYPTION_IV == undefined) {
+  throw new Error("env is wrong")
+}
+
+const encoding = 'hex';
 const algorithm: any = process.env.SALT_ENCRYPTION_ALG;
- const key = Buffer.from(process.env.SALT_ENCRYPTION_KEY, encoding);
- const iv =Buffer.from(process.env.SALT_ENCRYPTION_IV, encoding);
+const key = Buffer.from(process.env.SALT_ENCRYPTION_KEY, encoding);
+const iv = Buffer.from(process.env.SALT_ENCRYPTION_IV, encoding);
+
 
 
 export const encrypt = (value: string) => {
-  const cipher = createCipheriv(algorithm, key , iv );
+  const cipher = createCipheriv(algorithm, key, iv);
 
   let encrypted = cipher.update(value, encoding, encoding);
   encrypted += cipher.final(encoding);
-  return(encrypted);
+  return (encrypted);
 };
 
 export const decrypt = (encrypted: string) => {
