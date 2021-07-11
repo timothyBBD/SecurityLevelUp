@@ -4,8 +4,6 @@ import { addUser } from "../services/db-queries"
 import { registerUser } from "../services/user-services"
 
 export class User {
-    private name: string
-    private surname: string
     private email: string
     private userName: string
     private isAdmin: boolean = false
@@ -14,19 +12,9 @@ export class User {
     private salt: string = ""
 
 
-    constructor(name: string, surname: string, email: string, userName: string) {
-        this.name = name
-        this.surname = surname
+    constructor(email: string, userName: string) {
         this.email = email
         this.userName = userName
-    }
-
-    public getName(): string {
-        return this.name
-    }
-
-    public getSurname(): string {
-        return this.surname
     }
 
     public getEmail(): string {
@@ -53,14 +41,6 @@ export class User {
         return this.salt
     }
 
-    public setName(name: string) {
-        this.name = name
-    }
-
-    public setSurname(surname: string) {
-        this.surname = surname
-    }
-
     public setEmail(email: string) {
         this.email = email
     }
@@ -83,8 +63,9 @@ export class User {
 
     public insertToDb() {
         if (this.salt != "" && this.hashedPassword != "") {
-            registerUser(this)
+            return registerUser(this)
         }
+        return null
     }
 
     private async hash(password: string): Promise<string> {
@@ -95,7 +76,9 @@ export class User {
                 numberOfBytes = process.env.SALT_BYTES
             const salt = crypto.randomBytes(parseInt(numberOfBytes, 10)).toString('hex');
             this.hashedPassword = hashPassword(password, salt);
+            console.log(salt)
             this.salt = encrypt(salt);
+            console.log(this.salt)
         })
     }
 

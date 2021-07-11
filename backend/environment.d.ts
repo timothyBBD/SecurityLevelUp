@@ -10,6 +10,10 @@ declare global {
             HASH_ALGORITHM: string
             JWT_VALIDATION_KEY_PATH: number | PathLike
             SALT_BYTES: string
+            DB_HOST: string
+            DB_USER: string
+            DB_PASSWORD: string
+            DB_DATABASE: string
         }
     }
 }

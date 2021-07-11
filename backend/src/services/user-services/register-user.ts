@@ -14,8 +14,7 @@ export const registerUser = async (user: User) => {
     {
         throw new Error('Failed to add new user, details provided are not valid');
     }
-
-    const accessToken = createAccessToken(new UserJwt(dbUser[0].id, dbUser[0].name, dbUser[0].email, dbUser[0].admin));
+    const accessToken = createAccessToken(new UserJwt(user.getUserName(), dbUser.email, dbUser.admin_user));
 
     return { dbUser, accessToken };
 };

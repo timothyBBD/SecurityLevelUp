@@ -1,3 +1,4 @@
+import { addBlogPost } from "../services/db-queries/blog-posts"
 
 export class BlogPost {
     private title: string
@@ -29,7 +30,12 @@ export class BlogPost {
     }
 
     public insertToDb() {
-        
+        try {
+            addBlogPost(this)
+        } catch (e) {
+            return false
+        }
+        return true        
     }
 
 }

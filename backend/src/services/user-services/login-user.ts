@@ -8,12 +8,14 @@ import { passwordDetails, userDetails } from '../db-queries';
 export const loginUser = async (user: UserLogin) => {
 
     const dbUser = await userDetails(user.getUserName());
+    console.log(dbUser);
     if(Object.keys(dbUser).length === 0 && user.constructor === Object)
     {
         throw new Error('Failed to login, Invalid User details provided');
     }
-
+    
     const { passwordHash, encryptedSalt } = await passwordDetails(dbUser.userId);
+    console.log(encryptedSalt)
     const decryptedSalt = decrypt(encryptedSalt);
     const providedPasswordHash = hashPassword(user.getPassword(), decryptedSalt);
 
@@ -22,6 +24,6 @@ export const loginUser = async (user: UserLogin) => {
         throw new Error('Failed to login, Invalid User details provided');
     }
 
-    const accessToken = createAccessToken(new UserJwt(dbUser[0].id, dbUser[0].name, dbUser[0].email, dbUser[0].admin) );
+    const accessToken = createAccessToken(new UserJwt(user.getUserName(), dbUser[0].email, dbUser[0].admin) );
     return accessToken;
 };

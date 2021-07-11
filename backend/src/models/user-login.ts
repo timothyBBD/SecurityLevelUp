@@ -20,11 +20,7 @@ export class UserLogin {
     }
 
     public async login(): Promise<boolean> {
-        try {
             this.accessToken = await loginUser(this)
-        } catch (e) {
-            return false
-        }
         return true
     }
 

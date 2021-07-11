@@ -5,10 +5,12 @@ import { UserLogin } from "../models/user-login";
 const userController = {
     async registerUser(req: express.Request, res: express.Response) {
         const body = req.body
-        const user = new User(body.name, body.surname, body.email, body.username)
+        console.log(req)
+        const user = new User(body.email, body.username)
+        console.log(body.password)
         user.setPassword(body.password)
-        await user.insertToDb()
-        res.status(200).send()
+        const jwt = await user.insertToDb()
+        return res.status(200).send(jwt?.accessToken)
     },
 
     async loginUser(req: express.Request, res: express.Response) {

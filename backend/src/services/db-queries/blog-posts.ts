@@ -1,11 +1,12 @@
+import { BlogPost } from '../../models/blog-post';
 import { query } from './generic-query-service';
 
 
 
 
-export const addBlogPost = async (title: string, body: string, userId: number) => {
+export const addBlogPost = async (blog: BlogPost) => {
 
-    await query('CALL sp_add_blog_post(?,?,?)', title, body, userId);
+    await query('CALL sp_add_blog_post(?,?,?)', blog.getTitle(), blog.getContent(), blog.getUserId());
 };
 
 export const getBlogPosts = async () => {
