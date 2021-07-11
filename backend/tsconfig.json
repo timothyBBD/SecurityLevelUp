@@ -9,6 +9,7 @@
     "experimentalDecorators": true, // required for Decorators
     "emitDecoratorMetadata": true,  // required for Decorators
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true, 
+    "allowJs": true
   }
 }
