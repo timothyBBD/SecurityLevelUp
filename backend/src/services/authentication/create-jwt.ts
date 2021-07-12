@@ -8,8 +8,8 @@ export const createAccessToken = (payload: UserJwt) => {
     }
     const secretKey = fs.readFileSync("../"+process.env.JWT_ENCRYPTION_KEY_PATH);
 
-    const options: SignOptions = {}
-    if (process.env.JWT_ALGORITHM != undefined) { algorithm: process.env.JWT_ALGORITHM }
+    const options: SignOptions = {expiresIn: "1h"}
+    if (process.env.JWT_ALGORITHM != undefined) process.env.JWT_ALGORITHM
     console.log(payload)
     let jwtPayload = Object.assign({}, payload);
     const token = jwt.sign(jwtPayload, secretKey, options);

@@ -9,7 +9,7 @@ export const loginUser = async (user: UserLogin) => {
 
     const dbUser = await userDetails(user.getUserName());
     console.log(dbUser);
-    if(Object.keys(dbUser).length === 0 && user.constructor === Object)
+    if(Object.keys(dbUser).length === 0 && dbUser.constructor === Object)
     {
         throw new Error('Failed to login, Invalid User details provided');
     }
@@ -24,6 +24,6 @@ export const loginUser = async (user: UserLogin) => {
         throw new Error('Failed to login, Invalid User details provided');
     }
 
-    const accessToken = createAccessToken(new UserJwt(user.getUserName(), dbUser[0].email, dbUser[0].admin) );
+    const accessToken = createAccessToken(new UserJwt(user.getUserName(), dbUser.email, dbUser.admin) );
     return accessToken;
 };

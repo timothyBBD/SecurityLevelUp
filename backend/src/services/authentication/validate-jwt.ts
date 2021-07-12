@@ -10,7 +10,7 @@ export const validateAccessToken = (token: any) => {
     if (process.env.JWT_ALGORITHM != undefined && typeof process.env.JWT_ALGORITHM != "string")
         algo.push(process.env.JWT_ALGORITHM)
     try {
-        const decodedJwt = jwt.verify(token, cert, { algorithms: algo });
+        const decodedJwt = <any>jwt.verify(token, cert, { algorithms: algo });
         return decodedJwt;
     } catch (err) {
         return false;
