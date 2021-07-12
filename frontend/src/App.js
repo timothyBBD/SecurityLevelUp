@@ -39,7 +39,9 @@ function App() {
 
     ajson.somehere("lsjkdf");
 
-    request.user.login('peter@peter.com', 'peterpeter', 'peterpassword');
+    // request.user.login('peter@peter.com', 'peterpeter', 'peterpassword');
+
+
 
     // var env_path = process.env.JWT_VALIDATION_KEY_PATH;
     // var public_key_file = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMPA056V5JW9o1n8bPGB\nZeM2phT1qGAQLWeapPpKtsj4DwfD3nYc9f0SdN651yYkMhVCSqUnm6WzEUZeT1oP\njTfdVc7wqkpkpxcFyLWVnLC6OrLCpNL2hoO8D13lQga4ShQVsYIvEfvlHtyEUlKa\naHPXK1CbuTI6KwJTUUF7q1gH/FLnrMSlSMY1UEH6rge2l91umVVcpR0nWG17t5JA\nzIvkEIk2g8e93AO5+ENuiagCYwh3xJS1WyghOTPQrccVWnVq1D8dzxbOsCy3XPSn\n3yL2tp00pV/SsueQO82pwJb+drtvxeKBkK/sQmg1W7Xlopt0/Bkj8wrs6ioRrbk8\nQwIDAQAB\n-----END PUBLIC KEY-----\n";
@@ -56,6 +58,8 @@ function App() {
 
   const [show, setShow] = useState(false);
   const [page, setPage] = useState(0);
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [username, setUsername] = useState("ausername");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -72,7 +76,7 @@ function App() {
 
   return (
     <div className='App'>
-      <Modal show={show} onHide={handleClose} size='lg' >
+      <Modal show={show} onHide={handleClose} size='lg' onExited={() => {setPage(0);}}>
         <Modal.Body>
           <LoginModal />
           
@@ -95,6 +99,10 @@ function App() {
         <Navbar collapseOnSelect expand='lg' className='py-4' variant='light'>
           <Container>
             <Navbar.Brand to='/' className='brandName' >Simplicity Blog</Navbar.Brand>
+
+            {isLoggedIn && 
+                <div >Hi, {username}</div>}
+
             <Navbar.Toggle aria-controls='responsive-navbar-nav' />
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav defaultActiveKey='/articles' className='ml-auto'>
@@ -120,16 +128,29 @@ function App() {
                   About
                 </Link>
 
-                <Link
-                  style={pageButtonStyle[page === 2]}
-                  className='pageButtonStyle mx-3'
-                  onClick={() => {
-                    setPage(2);
-                    handleShow();
-                  }}
-                >
-                  Register/Login
-                </Link>
+                {isLoggedIn ? 
+
+                  <Link
+                    style={pageButtonStyle[page === 2]}
+                    className='pageButtonStyle mx-3'
+                    onClick={() => {
+                      setLoggedIn(false);
+                    }}
+                  >
+                    Log out
+                  </Link> :
+                  <Link
+                    style={pageButtonStyle[page === 2]}
+                    className='pageButtonStyle mx-3'
+                    onClick={() => {
+                      setPage(2);
+                      handleShow();
+                    }}
+                  >
+                    Register/Login
+                  </Link>
+                }
+                
               </Nav>
             </Navbar.Collapse>
           </Container>
