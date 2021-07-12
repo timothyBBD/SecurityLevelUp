@@ -3,11 +3,11 @@ import { BlogPost } from "../models/blog-post"
 import { getBlogPosts } from "../services/db-queries/blog-posts"
 
 const blogController = {
-    addBlog(req: express.Request, res: express.Response) {
-        const { title, content } = req.body
-        const post = new BlogPost(title, content, 1)
+    async addBlog(req: express.Request, res: express.Response) {
+        const { title, body } = req.body
+        const post = new BlogPost(title, body, res.locals.user.userId)
         if (post.insertToDb())
-            res.status(200).send(post)
+            res.status(200).send(await post.toObject())
         else
             res.status(400).send("an error occurred")
     },
@@ -17,7 +17,7 @@ const blogController = {
     },
 
     async getAllBlogs(req: express.Request, res: express.Response) {
-        const blogPosts: BlogPost = await getBlogPosts()
+        const blogPosts: BlogPost[] = await getBlogPosts()
         res.status(200).send(blogPosts)
     }
 }

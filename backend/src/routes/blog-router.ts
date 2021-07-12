@@ -10,7 +10,7 @@ blogRouter.route('/').all((req: express.Request, res: express.Response, next: ex
     next();
 })
 
-blogRouter.route('/').post([checkJwt, checkIsAdmin], blogController.addBlog)
+blogRouter.route('/').post([checkJwt], blogController.addBlog)
 
 blogRouter.route('/').get(blogController.getAllBlogs)
 

@@ -5,14 +5,12 @@ export const validateAccessToken = (token: any) => {
     if (process.env.JWT_VALIDATION_KEY_PATH == undefined) {
         throw new Error("env is wrong")
     }
-    var cert = fs.readFileSync(process.env.JWT_VALIDATION_KEY_PATH);
+    var cert = fs.readFileSync("../"+process.env.JWT_VALIDATION_KEY_PATH);
     var algo: Algorithm[] = []
-    if (process.env.JWT_ALGORITHM != undefined && typeof process.env.JWT_ALGORITHM != "string")
-        algo.push(process.env.JWT_ALGORITHM)
-    try {
-        const decodedJwt = <any>jwt.verify(token, cert, { algorithms: algo });
-        return decodedJwt;
-    } catch (err) {
-        return false;
-    }
+    if (process.env.JWT_ALGORITHM != undefined)
+        algo.push(<Algorithm>process.env.JWT_ALGORITHM)
+    console.log(algo)
+    const decodedJwt = <any>jwt.verify(token, cert, { algorithms: algo });
+    return decodedJwt;
+
 };

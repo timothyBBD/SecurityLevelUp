@@ -1,14 +1,15 @@
 import { addBlogPost } from "../services/db-queries/blog-posts"
+import { query } from "../services/db-queries/generic-query-service"
 
 export class BlogPost {
     private title: string
-    private content: string
+    private body: string
     private timeCreated: string
     private userId: number
 
-    constructor(title: string, content: string, userId: number, timeCreated: string = Date()) {
+    constructor(title: string, body: string, userId: number, timeCreated: string = Date()) {
         this.title = title
-        this.content = content
+        this.body = body
         this.userId = userId
         this.timeCreated = timeCreated
     }
@@ -18,7 +19,7 @@ export class BlogPost {
     }
 
     public getContent(): string {
-        return this.content
+        return this.body
     }
 
     public getUserId(): number {
@@ -36,6 +37,17 @@ export class BlogPost {
             return false
         }
         return true        
+    }
+
+    public async toObject() {
+        const { user_name } = ( await query("SELECT user_name FROM users WHERE id = ?", this.userId))[0]
+        console.log(user_name)
+        return {
+            "title": this.title,
+            "body": this.body,
+            "username": user_name,
+            "created": this.timeCreated
+        }
     }
 
 }

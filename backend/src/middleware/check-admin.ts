@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { userDetails } from "../services/db-queries";
 
 export const checkIsAdmin = async (req: Request, res: Response, next: NextFunction) => {
-    const username = res.locals.jwtPayload.username;
+    const username = res.locals.jwtPayload.sub;
     const dbUser = await userDetails(username);
+    console.log(dbUser)
     if(Object.keys(dbUser).length === 0 && dbUser.constructor === Object)
     {
         res.status(401).send()

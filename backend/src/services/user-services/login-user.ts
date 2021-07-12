@@ -2,7 +2,7 @@ import { User } from '../../models/user';
 import { UserJwt } from '../../models/user-jwt-token';
 import { UserLogin } from '../../models/user-login';
 import { createAccessToken, decrypt, hashPassword } from '../authentication';
-import { passwordDetails, userDetails } from '../db-queries';
+import { passwordDetails, userDetails, userDetailsL } from '../db-queries';
 
 
 export const loginUser = async (user: UserLogin) => {

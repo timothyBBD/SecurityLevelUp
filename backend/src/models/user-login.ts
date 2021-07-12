@@ -20,7 +20,7 @@ export class UserLogin {
     }
 
     public async login(): Promise<boolean> {
-            this.accessToken = await loginUser(this)
+        this.accessToken = await loginUser(this)
         return true
     }
 

@@ -9,10 +9,10 @@ const options = {
 };
 
 
-export const query = async (query: string, ...args: any[]) => {
+export const query = async (query: string, ...args: any[]) : Promise<any[]> => {
     let connection = await mysql.createConnection(options);
     const [rows]: any[] = await connection.execute(query, args);
     connection.end();
-    return rows[0];
+    return rows;
 };
 

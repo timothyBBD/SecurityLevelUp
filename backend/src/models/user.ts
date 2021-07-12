@@ -69,6 +69,7 @@ export class User {
     }
 
     private async hash(password: string): Promise<string> {
+        console.log(password)
         return new Promise((resolve, reject) => {
             // generate random 16 bytes long salt
             let numberOfBytes: string = "16"
