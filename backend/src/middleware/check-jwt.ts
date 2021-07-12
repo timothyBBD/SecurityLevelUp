@@ -7,7 +7,11 @@ import { userDetails } from "../services/db-queries";
 export const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
     const token = <string>req.headers["auth"];
     let jwtPayload;
-    jwtPayload = validateAccessToken(token);
+    try {
+        jwtPayload = validateAccessToken(token);
+    } catch {
+        res.status(401).send("JWY token isn't valid")
+    }
     console.log(jwtPayload)
     if (jwtPayload == false) {
         res.status(401).send()
