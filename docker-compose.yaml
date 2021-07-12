@@ -1,0 +1,46 @@
+version: '3.8'
+
+services: 
+  mysqldb:
+    image: mysql
+    restart: always
+    env_file: .config/production.env
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+      MYSQL_DATABASE: $DB_DATABASE
+    ports:
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+    command: --init-file /db_queries/init.sql
+    volumes: 
+      - ./init.sql:/db_queries/init.sql
+      - db-config:/etc/mysql
+      - db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+  
+  be:
+    build:
+      context: ./out
+      dockerfile: ./app/Dockerfile
+    image: be-app
+    depends_on:
+      - mysqldb
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
+
+  fe:
+    build:
+      context: ./build
+      dockerfile: ./app/Dockerfile
+    image: fe-app
+    depends_on:
+      - mysqldb
+    ports:
+      - 4000:80
+    stdin_open: true
+    tty: true
+
+volumes: 
+  db-config:
+  db-data:

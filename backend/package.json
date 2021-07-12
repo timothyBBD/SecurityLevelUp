@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "ts-node ./out/app.js",
     "api:dev": "ts-node -r dotenv/config index.ts  dotenv_config_path=../config/develop.env",
+    "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
