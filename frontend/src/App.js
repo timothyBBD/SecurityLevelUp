@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.scss';
 import Components from './components/index';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,7 +11,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
-
 import Button from 'react-bootstrap/Button';
 
 
@@ -22,22 +21,34 @@ import jwt_decode from "jwt-decode";
 import request from './services/requests';
 
 
+import CreatePost from './pages/createPost/createPost';
+
+
+import { postController } from './controllers';
+
+
 const Article = Components.Article;
 const AboutPreview = Components.AboutPreview;
-
 const LoginModal = Components.LoginModal;
 
 function App() {
 
   useEffect(() => {
 
-    var ajson = {
-      somehere: (w) => {
-        console.log('some here as well' + w);
-      }
+    var what = localStorage.getItem('token');
+
+    if (loadingArticles) {
+      updateArticles();
     }
 
-    ajson.somehere("lsjkdf");
+
+    // var ajson = {
+    //   somehere: (w) => {
+    //     console.log('some here as well' + w);
+    //   }
+    // }
+
+    // ajson.somehere("lsjkdf");
 
     // request.user.login('peter@peter.com', 'peterpeter', 'peterpassword');
 
@@ -56,13 +67,23 @@ function App() {
 
   });
 
+  const history = useHistory();
   const [show, setShow] = useState(false);
   const [page, setPage] = useState(0);
-  const [isLoggedIn, setLoggedIn] = useState(true);
-  const [username, setUsername] = useState("ausername");
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [loadingArticles, setLoadingArticles] = useState(true);
+  const [articles, setArticles] = useState([]);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    history.push('/articles');
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
+  
+  // const articles = postController.getAllPosts().map(article => {
+  //   return <Article title={article.title} message={article.content}/>;
+  // });
 
   const pageButtonStyle = {
     true: {
@@ -74,28 +95,39 @@ function App() {
     false: {},
   };
 
+  const updateArticles = () => {
+    // setLoadingArticles(true);
+    postController.getAllPosts()
+    .then((response) => {
+
+        console.log('response articles', response);
+
+
+        setArticles(response.data);
+
+        setLoadingArticles(false);
+
+    }).catch((e) => {
+        console.debug('Error getting articles in exception: ', e);
+
+        // setInvalidUser(true);
+    });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+  }
+
   return (
     <div className='App'>
       <Modal show={show} onHide={handleClose} size='lg' onExited={() => {setPage(0);}}>
         <Modal.Body>
-          <LoginModal />
-          
+          <LoginModal closeModal={handleClose} userInformation={{loggedIn: setLoggedIn, username: setUsername}} />
         </Modal.Body>
-
-
-        {/* <Modal.Footer>
-          <Button variant='secondary' onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant='primary' onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
-
-
       </Modal>
 
-      <Router>
+      {/* <Router> */}
         <Navbar collapseOnSelect expand='lg' className='py-4' variant='light'>
           <Container>
             <Navbar.Brand to='/' className='brandName' >Simplicity Blog</Navbar.Brand>
@@ -123,9 +155,9 @@ function App() {
                   onClick={() => {
                     setPage(1);
                   }}
-                  to='/about'
+                  to='/AddPost'
                 >
-                  About
+                  Add
                 </Link>
 
                 {isLoggedIn ? 
@@ -134,7 +166,7 @@ function App() {
                     style={pageButtonStyle[page === 2]}
                     className='pageButtonStyle mx-3'
                     onClick={() => {
-                      setLoggedIn(false);
+                      handleLogout();
                     }}
                   >
                     Log out
@@ -158,19 +190,19 @@ function App() {
 
         <div className='mainContent'>
           <Switch>
+            <Redirect exact from="/" to="/articles" />
             <Route path='/articles'>
               <Container>
                 <Row >
-                  <Col className='testytest'
+                  <Col className='articles'
                     md={{ order: 'first', span: 8 }}
                     xs={{ order: 'last', span: 12 }}
                   >
-                    <Article
-                      title='Cleaning out emotional Clutter'
-                      message='Lorem Ipsum or something like that'
-                    />
+                    {loadingArticles ? <div>laoding</div> : articles.map(article => {
+                      return <Article title={article.title} message={article.body}/>;
+                    })}
                   </Col>
-                  <Col className='testytest'
+                  <Col className='articles'
                     md={{ order: 'last', span: 4 }}
                     xs={{ order: 'first', span: 12 }}
                   >
@@ -179,12 +211,12 @@ function App() {
                 </Row>
               </Container>
             </Route>
-            <Route path='/about'>
-              <AboutPreview />
+            <Route path='/AddPost'>
+              <CreatePost isLoggedIn={isLoggedIn} update={updateArticles}/>
             </Route>
           </Switch>
         </div>
-      </Router>
+      {/* </Router> */}
     </div>
   );
 }

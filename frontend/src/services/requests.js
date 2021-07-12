@@ -1,34 +1,56 @@
 import axios from "axios";
+import constants from '../constants';
 import jwt_decode from "jwt-decode";
-// export * as constants from '../constants';
+// export * as constants from '../';
 
 
-export const constants = {
-    URI: {
-        HOST: 'http://localhost:3000/',
-        USER: 'user/'
+// export const constants = {
+//     URI: {
+//         HOST: 'http://localhost:3000/',
+//         USER: 'user/'
+//     }
+// };
+
+function getConfig() {
+    if (localStorage.getItem('token') === null) {
+        return {};
+    } else {
+        return {
+            headers: {
+                auth: localStorage.getItem('token'), 
+            }
+        };
     }
-};
+}
 
 const API = {
-    post: (path, body) => { return axios.post(constants.URI.HOST + path, body) }
+    post: (path, body) => { return axios.post(constants.URI.HOST + path, body, getConfig()) },
+    get: (path) => { return axios.get(constants.URI.HOST + path, getConfig()) }
 }
 
 const request = {
     user: {
-        login: (email, username, password) => {
+        login: (username, password) => {
 
-            console.log('loign');
+            console.debug('login with: ', username, password);
 
-            API.post(constants.URI.USER, {email, username, password})
-            .then((response) => {
-                var decoded = jwt_decode(response.data); 
+            return API.post(constants.URI.LOGIN, {username, password});
+        },
+        register: (username, email, password) => {
 
-                console.log('decoded', decoded);
+            console.debug('register with: ', username, email, password);
 
-                localStorage.setItem('token', decoded);
-            });
+            return API.post(constants.URI.REGISTER, {username, email, password});
         }    
+    },
+    blog: {
+        get: () => {
+            return API.get(constants.URI.BLOG.GET);
+        },
+        add: (title, body) => {
+            console.debug('add with: ', title, body);
+            return API.post(constants.URI.BLOG.ADD, {title, body});
+        }
     }
 }
 

@@ -1,8 +1,15 @@
 
 
-export const URI = {
-    HOST: 'http://localhost:3000/',
-    USER: 'user/'
+const constants = {
+    URI: {
+        HOST: 'http://localhost:3000/',
+        LOGIN: 'user/login',
+        REGISTER: 'user/',
+        BLOG: {
+            GET: 'blog/',
+            ADD: 'blog/'
+        }
+    }
 }
 
-export const constants = 'sdf';
+export default constants;

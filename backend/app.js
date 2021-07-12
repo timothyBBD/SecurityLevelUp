@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import { addUser, passwordDetails, userDetails } from './services/queries';
 
@@ -13,9 +14,11 @@ import { addUser, passwordDetails, userDetails } from './services/queries';
     userName = 'Josh';
 
 
-    const { password_hash, salt_value } = await passwordDetails(userName);
-    console.log(password_hash);
-    console.log(salt_value);
+    const { passwordHash2, saltValue } = await passwordDetails(userName);
+    // eslint-disable-next-line no-console
+    console.log(passwordHash2);
+    // eslint-disable-next-line no-console
+    console.log(saltValue);
 })();
 
 

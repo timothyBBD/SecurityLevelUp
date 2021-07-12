@@ -11,9 +11,6 @@ export const validateAccessToken = (token: any) => {
         algo.push(process.env.JWT_ALGORITHM)
     try {
         const decodedJwt = jwt.verify(token, cert, { algorithms: algo });
-
-        decodedJwt.payload.isAdmin
-
         return decodedJwt;
     } catch (err) {
         return false;
