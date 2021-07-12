@@ -122,3 +122,22 @@ BEGIN
 	INNER JOIN emails ON users.id = emails.user_id
 	WHERE users.user_name = userName;
 END
+
+CREATE USER [IF NOT EXISTS] 'simplicity_db'@'localhost'
+IDENTIFIED BY '6%SYsRmymokmjG5!rzCS6ZcemGSs6@'
+
+GRANT permission_type
+ON INSERT 
+TO 'simplicity_db'@'localhost';
+
+GRANT permission_type
+ON SELECT 
+TO 'simplicity_db'@'localhost';
+
+GRANT permission_type
+ON UPDATE 
+TO 'simplicity_db'@'localhost';
+
+GRANT permission_type
+ON EXECUTE
+TO 'simplicity_db'@'localhost';
