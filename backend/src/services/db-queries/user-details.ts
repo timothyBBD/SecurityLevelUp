@@ -9,5 +9,5 @@ export const userDetails = async (userName: string) => {
 export const userDetailsL = async (userName: string) => {
     const userDetails = (await query('CALL sp_user_details(?)', userName))[0];
     console.log(userDetails)
-    return { ...userDetails };
+    return userDetails;
 };

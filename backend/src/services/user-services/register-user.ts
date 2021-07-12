@@ -1,5 +1,5 @@
 import { createAccessToken, encrypt, hashPassword } from '../authentication';
-import { addUser, userDetails } from '../db-queries';
+import { addUser, userDetails, userDetailsL } from '../db-queries';
 import { User } from '../../models/user';
 import { UserJwt } from '../../models/user-jwt-token';
 

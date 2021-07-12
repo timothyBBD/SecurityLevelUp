@@ -9,7 +9,15 @@ const userController = {
         const user = new User(body.email, body.username)
         console.log(body.password)
         user.setPassword(body.password)
-        const jwt = await user.insertToDb()
+        let jwt = null
+        try {
+             jwt = await user.insertToDb()
+        } catch (err: any) {
+            return res.status(400).send(err.message)
+        }
+        if (jwt == null) {
+            return res.status(400).send("Error")
+        }
         return res.status(200).send(jwt?.accessToken)
     },
 
