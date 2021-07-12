@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.scss';
 import Components from './components/index';
@@ -13,12 +13,47 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
 
 import Button from 'react-bootstrap/Button';
+
+
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
+import jwt_decode from "jwt-decode";
+
+import request from './services/requests';
+
+
 const Article = Components.Article;
 const AboutPreview = Components.AboutPreview;
 
 const LoginModal = Components.LoginModal;
 
 function App() {
+
+  useEffect(() => {
+
+    var ajson = {
+      somehere: (w) => {
+        console.log('some here as well' + w);
+      }
+    }
+
+    ajson.somehere("lsjkdf");
+
+    request.user.login('peter@peter.com', 'peterpeter', 'peterpassword');
+
+    // var env_path = process.env.JWT_VALIDATION_KEY_PATH;
+    // var public_key_file = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyMPA056V5JW9o1n8bPGB\nZeM2phT1qGAQLWeapPpKtsj4DwfD3nYc9f0SdN651yYkMhVCSqUnm6WzEUZeT1oP\njTfdVc7wqkpkpxcFyLWVnLC6OrLCpNL2hoO8D13lQga4ShQVsYIvEfvlHtyEUlKa\naHPXK1CbuTI6KwJTUUF7q1gH/FLnrMSlSMY1UEH6rge2l91umVVcpR0nWG17t5JA\nzIvkEIk2g8e93AO5+ENuiagCYwh3xJS1WyghOTPQrccVWnVq1D8dzxbOsCy3XPSn\n3yL2tp00pV/SsueQO82pwJb+drtvxeKBkK/sQmg1W7Xlopt0/Bkj8wrs6ioRrbk8\nQwIDAQAB\n-----END PUBLIC KEY-----\n";
+    // var jwt_token_decoded = jwt_decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJzdWIiOiJwZXRlcnBhbiIsImVtYWlsIjoicGV0ZXJAbmV2ZXJsYW5kLmNvbSIsImFkbWluIjowLCJpYXQiOjE2MjYwODg0NTN9.mHjMz5Fs_8wb1a5FMs5KDBgTchap2UKYEoZxHkqgwVg");
+
+    // var decoded = jwt.verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIiLCJzdWIiOiJwZXRlcnBhbiIsImVtYWlsIjoicGV0ZXJAbmV2ZXJsYW5kLmNvbSIsImFkbWluIjowLCJpYXQiOjE2MjYwODg0NTN9.mHjMz5Fs_8wb1a5FMs5KDBgTchap2UKYEoZxHkqgwVg",
+    //   public_key_file, 
+    //   { algorithms: ["HS256"] }
+    // );
+    
+    // console.log('decoded', decoded);
+
+  });
+
   const [show, setShow] = useState(false);
   const [page, setPage] = useState(0);
 
