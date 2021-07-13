@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mysqldb:
@@ -6,20 +6,20 @@ services:
     restart: always
     env_file: ./.env
     environment:
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-      MYSQL_DATABASE: $DB_DATABASE
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
     ports:
-      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+      - ${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}
+    command: 
+      --init-file /db_queries/init.sql
     volumes:
-      - ./db_queries/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./init.sql:/db_queries/init.sql
       - db-config:/etc/mysql
       - db-data:/var/lib/mysql
       - ./db/backup/files/:/data_backup/data
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: ./Dockerfile
+    image: backend
     depends_on:
       - mysqldb
     ports:
@@ -28,9 +28,7 @@ services:
     tty: true
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: ./Dockerfile
+    image: frontend
     depends_on:
       - mysqldb
       - backend

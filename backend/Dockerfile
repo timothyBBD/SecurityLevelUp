@@ -7,7 +7,7 @@ COPY package.json /app
 COPY yarn.lock /app
 COPY tsconfig.json /app
 
-RUN yarn install --production
+RUN yarn install 
 
 COPY . /app
 

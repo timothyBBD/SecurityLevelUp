@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node ./out/app.js",
     "api:dev": "ts-node -r dotenv/config index.ts  dotenv_config_path=../config/develop.env",
-    "api:prod": "ts-node -r dotenv/config index.ts  dotenv_config_path=production.env",
+    "api:prod": "ts-node -r dotenv/config index.ts  dotenv_config_path=.env",
     "build": "tsc -p .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
