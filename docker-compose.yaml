@@ -17,11 +17,8 @@ services:
       - db-data:/var/lib/mysql
       - ./db/backup/files/:/data_backup/data
 
-  be:
-    build:
-      context: ./out
-      dockerfile: ./app/Dockerfile
-    image: be-app
+  backend:
+    image: backend
     depends_on:
       - mysqldb
     ports:
@@ -29,15 +26,13 @@ services:
     stdin_open: true
     tty: true
 
-  fe:
-    build:
-      context: ./build
-      dockerfile: ./app/Dockerfile
-    image: fe-app
+  frontend:
+    image: frontend
     depends_on:
       - mysqldb
+      - backend
     ports:
-      - 4000:80
+      - 80:80
     stdin_open: true
     tty: true
 

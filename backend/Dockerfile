@@ -11,8 +11,6 @@ RUN yarn install --production
 
 COPY . /app
 
-RUN yarn build
-
 EXPOSE 3000
 
-CMD [ "yarn", "start" ]
+CMD [ "npm", "run", "api:prod" ]

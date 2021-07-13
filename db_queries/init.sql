@@ -123,7 +123,7 @@ BEGIN
 	WHERE users.user_name = userName;
 END
 
-CREATE USER [IF NOT EXISTS] 'simplicity_db'@'localhost'
+CREATE USER [IF NOT EXISTS] 'simplicity_server'@'localhost'
 IDENTIFIED BY '6%SYsRmymokmjG5!rzCS6ZcemGSs6@'
 
 GRANT permission_type
