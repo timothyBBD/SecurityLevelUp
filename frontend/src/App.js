@@ -1,28 +1,42 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.scss';
 import Components from './components/index';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
+import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+import CreatePost from './pages/createPost/createPost';
+import { postController } from './controllers';
+import PropagateLoader from "react-spinners/PropagateLoader";
 
-import CreatePost from './pages/createPost/createPost'
 const Article = Components.Article;
 const AboutPreview = Components.AboutPreview;
 const LoginModal = Components.LoginModal;
 
 function App() {
+
+  useEffect(() => {
+    if (loadingArticles) {
+      updateArticles();
+    }
+  });
+
+  const history = useHistory();
   const [show, setShow] = useState(false);
   const [page, setPage] = useState(0);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [loadingArticles, setLoadingArticles] = useState(true);
+  const [articles, setArticles] = useState([]);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    history.push('/articles');
+    setShow(false);
+    setPage(0);
+  };
   const handleShow = () => setShow(true);
 
   const pageButtonStyle = {
@@ -35,44 +49,84 @@ function App() {
     false: {},
   };
 
+  const updateArticles = () => {
+    postController.getAllPosts()
+    .then((response) => {
+
+        console.debug('Response articles: ', response);
+
+        setArticles(response.data);
+
+        setLoadingArticles(false);
+
+    }).catch((e) => {
+        console.debug('Error getting articles in exception: ', e);
+    });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+  }
+
   return (
     <div className='App'>
-      <Modal show={show} onHide={handleClose} size='lg' >
+      <Modal show={show} onHide={handleClose} size='lg' onExited={() => {
+          console.log('what what?');
+          history.push('/articles');
+          setPage(0);
+        }} animation={false}>
         <Modal.Body>
-          <LoginModal closeModal={handleClose}/>
+          <LoginModal closeModal={handleClose} userInformation={{loggedIn: setLoggedIn, username: setUsername}} />
         </Modal.Body>
       </Modal>
 
-      <Router>
-        <Navbar collapseOnSelect expand='lg' className='py-4' variant='light'>
-          <Container>
-            <Navbar.Brand to='/' className='brandName' >Simplicity Blog</Navbar.Brand>
-            <Navbar.Toggle aria-controls='responsive-navbar-nav' />
-            <Navbar.Collapse id='responsive-navbar-nav'>
-              <Nav defaultActiveKey='/articles' className='ml-auto'>
-                <Link
-                  style={pageButtonStyle[page === 0]}
-                  className='pageButtonStyle mx-3'
-                  onClick={() => {
-                    setPage(0);
-                  }}
-                  to='/articles'
-                >
-                  Articles
-                </Link>
+      <Navbar collapseOnSelect expand='lg' className='py-4' variant='light'>
+        <Container>
+          <Navbar.Brand to='/' className='brandName' >Simplicity Blog</Navbar.Brand>
+
+          {isLoggedIn && 
+              <div >Hi, {username}</div>}
+
+          <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+          <Navbar.Collapse id='responsive-navbar-nav'>
+            <Nav defaultActiveKey='/articles' className='ml-auto'>
+              <Link
+                to='/articles'
+                style={pageButtonStyle[page === 0]}
+                className='pageButtonStyle mx-3'
+                onClick={() => {
+                  setPage(0);
+                }}
+              >
+                Articles
+              </Link>
+
+              <Link
+                to='/AddPost'
+                style={pageButtonStyle[page === 1]}
+                className='pageButtonStyle mx-3'
+                onClick={() => {
+                  setPage(1);
+                }}
+              >
+                Add
+              </Link>
+
+              {isLoggedIn ? 
 
                 <Link
-                  style={pageButtonStyle[page === 1]}
+                  to=''
+                  style={pageButtonStyle[page === 2]}
                   className='pageButtonStyle mx-3'
                   onClick={() => {
-                    setPage(1);
+                    handleLogout();
                   }}
-                  to='/AddPost'
                 >
-                  Add
-                </Link>
-
+                  Log out
+                </Link> :
                 <Link
+                  to=''
                   style={pageButtonStyle[page === 2]}
                   className='pageButtonStyle mx-3'
                   onClick={() => {
@@ -82,40 +136,41 @@ function App() {
                 >
                   Register/Login
                 </Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+              }
+              
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
-        <div className='mainContent'>
-          <Switch>
-            <Route path='/articles'>
-              <Container>
-                <Row >
-                  <Col className='testytest'
-                    md={{ order: 'first', span: 8 }}
-                    xs={{ order: 'last', span: 12 }}
-                  >
-                    <Article
-                      title='Cleaning out emotional Clutter'
-                      message='Lorem Ipsum or something like that'
-                    />
-                  </Col>
-                  <Col className='testytest'
-                    md={{ order: 'last', span: 4 }}
-                    xs={{ order: 'first', span: 12 }}
-                  >
-                    <AboutPreview />
-                  </Col>
-                </Row>
-              </Container>
-            </Route>
-            <Route path='/AddPost'>
-              <CreatePost />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      <div className='mainContent'>
+        <Switch>
+          <Redirect exact from="/" to="/articles" />
+          <Route path='/articles'>
+            <Container>
+              <Row >
+                <Col className='articles'
+                  md={{ order: 'first', span: 8 }}
+                  xs={{ order: 'last', span: 12 }}
+                >
+                  {loadingArticles ? <PropagateLoader size={5}/> : articles.map(article => {
+                    return <Article key={article.title+article.body} title={article.title} message={article.body}/>;
+                  })}
+                </Col>
+                <Col className='articles'
+                  md={{ order: 'last', span: 4 }}
+                  xs={{ order: 'first', span: 12 }}
+                >
+                  <AboutPreview />
+                </Col>
+              </Row>
+            </Container>
+          </Route>
+          <Route path='/AddPost'>
+            <CreatePost isLoggedIn={isLoggedIn} update={updateArticles}/>
+          </Route>
+        </Switch>
+      </div>
     </div>
   );
 }

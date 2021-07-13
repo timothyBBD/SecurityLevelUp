@@ -69,11 +69,19 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
+<<<<<<< HEAD
+<<<<<<< HEAD
+*.env
+=======
+.env
+>>>>>>> main
+=======
 
 .env
 
 *.env
 
+>>>>>>> main
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -107,5 +115,13 @@ out
 
 # TernJS port file
 .tern-port
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 *.pem
+=======
+>>>>>>> main
+=======
+
+*.pem
+>>>>>>> main
