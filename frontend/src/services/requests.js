@@ -1,15 +1,5 @@
 import axios from "axios";
 import constants from '../constants';
-import jwt_decode from "jwt-decode";
-// export * as constants from '../';
-
-
-// export const constants = {
-//     URI: {
-//         HOST: 'http://localhost:3000/',
-//         USER: 'user/'
-//     }
-// };
 
 function getConfig() {
     if (localStorage.getItem('token') === null) {

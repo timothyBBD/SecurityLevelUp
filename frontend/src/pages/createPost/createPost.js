@@ -1,46 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './createPost.css'
 import { postController } from '../../controllers'
-
-
-
+import Alert from 'react-bootstrap/Alert'
 
 export default function CreatePost(props) {
 
-    const [admin, setAdmin] = useState(false);
-    const isLoggedIn = props.isLoggedIn;
+    const [showError, setShowError] = useState(false);
+    const [errorHeader, setErrorHeader] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    
     const updateArticles = props.update;
 
     async function insertPost(title, description) {
-    
-        postController.insertPost(title, description)
-        .then((response) => {
-    
-            console.log('response articles', response);
-    
-    
-            // setArticles(response.data);
-    
-            // var decoded = jwt_decode(response.data); 
-    
-            // console.debug('decoded', decoded);
-    
-            // localStorage.setItem('token', decoded);
-    
-            // userInformation.loggedIn(true);
-            // userInformation.username(decoded.sub);
-    
-            updateArticles();
-        }).catch((e) => {
-            console.debug('Error getting articles in exception: ', e);
-    
-            // setInvalidUser(true);
-        });
-    }
+        if (showError) {
+            setShowError(false);
+        }
 
-    function CheckIsAdmin() {
-        const isAdmin = true;
-        setAdmin(isAdmin);
+        if (!title && !description) {
+            setErrorHeader("Duuude...? Do didn't enter anything?");
+            setErrorMessage("Add at least like a header.");
+            setShowError(true);
+            setTimeout(() => {setShowError(false);}, 8000);
+        } else {
+            postController.insertPost(title, description)
+            .then((response) => {
+        
+                console.debug('Response from insert article received:', response);
+        
+    
+                updateArticles();
+            }).catch((e) => {
+                console.debug('Error adding article with exception: ', e);
+        
+                setErrorHeader("Whoops. Something went wrong.");
+                setErrorMessage("I think... just try again next time? Or don't.");
+                setShowError(true);
+                setTimeout(() => {setShowError(false);}, 8000);
+            });
+        }
     }
 
     function addPost(event) {
@@ -51,10 +48,6 @@ export default function CreatePost(props) {
 
         insertPost(title, description);
     }
-
-    useEffect(() => {
-        CheckIsAdmin();
-    })
 
     function insertPostForm() {
         return <form onSubmit={addPost} className="post-form">
@@ -72,7 +65,12 @@ export default function CreatePost(props) {
 
     return (
         <div className="page">
-            {/* lskjdf */}
+            <Alert show={showError} variant="danger" onClose={() => setShowError(false)} transition>
+                <Alert.Heading>{errorHeader}</Alert.Heading>
+                <p>
+                    {errorMessage}
+                </p>
+            </Alert>
             <main>
                 {/* {true ? insertPostForm : notAdminTitle} */}
                 <Content/>
