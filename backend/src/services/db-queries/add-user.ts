@@ -5,7 +5,6 @@ import { userDetails, userDetailsL } from './user-details';
 export const addUser = async (user: User) => {
 
     const existingUser = await userDetailsL(user.getUserName());
-    console.log(existingUser)
     if (existingUser.length > 0) {
         throw new Error('User Already Exists');
     }

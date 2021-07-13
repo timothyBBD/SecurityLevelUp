@@ -69,7 +69,6 @@ export class User {
     }
 
     private async hash(password: string): Promise<string> {
-        console.log(password)
         return new Promise((resolve, reject) => {
             // generate random 16 bytes long salt
             let numberOfBytes: string = "16"
@@ -77,9 +76,7 @@ export class User {
                 numberOfBytes = process.env.SALT_BYTES
             const salt = crypto.randomBytes(parseInt(numberOfBytes, 10)).toString('hex');
             this.hashedPassword = hashPassword(password, salt);
-            console.log(salt)
             this.salt = encrypt(salt);
-            console.log(this.salt)
         })
     }
 

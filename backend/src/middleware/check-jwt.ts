@@ -12,7 +12,6 @@ export const checkJwt = async (req: Request, res: Response, next: NextFunction) 
     } catch {
         res.status(401).send("JWY token isn't valid")
     }
-    console.log(jwtPayload)
     if (jwtPayload == false) {
         res.status(401).send()
         return;

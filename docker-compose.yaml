@@ -10,7 +10,8 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
     ports:
       - ${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}
-    command: --init-file /db_queries/init.sql
+    command: 
+      --init-file /db_queries/init.sql
     volumes:
       - ./init.sql:/db_queries/init.sql
       - db-config:/etc/mysql
