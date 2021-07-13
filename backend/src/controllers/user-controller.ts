@@ -11,9 +11,7 @@ const userController = {
         }
 
         const body = req.body
-        console.log(req)
         const user = new User(body.email, body.username)
-        console.log(body.password)
         user.setPassword(body.password)
         let jwt = null
         try {

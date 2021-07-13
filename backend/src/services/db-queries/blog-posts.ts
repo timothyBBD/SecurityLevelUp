@@ -5,7 +5,6 @@ import { query } from './generic-query-service';
 
 
 export const addBlogPost = async (blog: BlogPost) => {
-    console.log(blog)
     await query('CALL sp_add_blog_post(?,?,?)', blog.getTitle(), blog.getContent(), blog.getUserId());
 };
 

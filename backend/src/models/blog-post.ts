@@ -41,7 +41,6 @@ export class BlogPost {
 
     public async toObject() {
         const { user_name } = ( await query("SELECT user_name FROM users WHERE id = ?", this.userId))[0]
-        console.log(user_name)
         return {
             "title": this.title,
             "body": this.body,
